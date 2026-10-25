@@ -5,6 +5,9 @@ final class HomeController extends Controller
 {
     public function index(): void
     {
-        $this->render('home/index', ['titulo' => 'Inicio']);
+        $this->render('home/index', [
+            'titulo'  => 'Inicio',
+            'resumen' => Membresia::resumen(),
+        ]);
     }
 }
