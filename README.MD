@@ -36,4 +36,4 @@ explicar código. Todo el código fue revisado y es comprendido por el autor.
 - Bootstrap 5.3 (MIT), descargado localmente en `public/vendor/bootstrap/`.
 
 ## Capturas de pantalla
-_(pendiente)_
+_(pendiente)_# Fuerza_Chapina

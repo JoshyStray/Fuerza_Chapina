@@ -1,0 +1,20 @@
+:root {
+    --fc-naranja: #f57c00;
+}
+
+.navbar-brand { letter-spacing: .5px; }
+
+.btn-primary {
+    --bs-btn-bg: var(--fc-naranja);
+    --bs-btn-border-color: var(--fc-naranja);
+    --bs-btn-hover-bg: #d96c00;
+    --bs-btn-hover-border-color: #d96c00;
+    --bs-btn-active-bg: #c26100;
+    --bs-btn-active-border-color: #c26100;
+    --bs-btn-disabled-bg: var(--fc-naranja);
+    --bs-btn-disabled-border-color: var(--fc-naranja);
+}
+
+.login-card { max-width: 420px; }
+
+.tarjeta-resumen .numero { font-size: 2.25rem; font-weight: 700; line-height: 1; }
