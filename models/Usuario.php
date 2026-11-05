@@ -14,4 +14,11 @@ final class Usuario
 
         return $stmt->fetch() ?: null;
     }
+
+    public static function todos(): array
+    {
+        return Database::pdo()
+            ->query('SELECT id, usuario, nombre, rol, activo FROM usuarios ORDER BY rol, nombre')
+            ->fetchAll();
+    }
 }

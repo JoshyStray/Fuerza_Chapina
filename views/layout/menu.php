@@ -3,6 +3,7 @@
 $menuOpciones = [
     ['etiqueta' => 'Inicio',     'c' => 'home',      'a' => 'index',  'roles' => ['administrador', 'recepcionista']],
     ['etiqueta' => 'Membresías', 'c' => 'membresia', 'a' => 'listar', 'roles' => ['administrador', 'recepcionista']],
+    ['etiqueta' => 'Usuarios',   'c' => 'usuario',   'a' => 'listar', 'roles' => ['administrador']],
 ];
 $menuActual  = $_GET['c'] ?? 'home';
 $menuUsuario = Auth::usuario();
