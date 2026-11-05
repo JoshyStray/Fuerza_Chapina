@@ -1,20 +1,300 @@
+/* ==========================================================================
+   Fuerza Chapina · identidad visual
+   Paleta: carbón, hueso, achiote (terracota), ocre y jade.
+   Motivo: banda tejida (inspirada en el güipil) y rombo como marca.
+   Sin fuentes externas: funciona sin conexión.
+   ========================================================================== */
+
 :root {
-    --fc-naranja: #f57c00;
+    --fc-carbon:       #1d1b19;
+    --fc-hueso:        #f4efe6;
+    --fc-papel:        #fffdf9;
+    --fc-linea:        #ded5c4;
+    --fc-texto:        #26231f;
+    --fc-suave:        #6f675b;
+    --fc-achiote:      #c4502a;
+    --fc-achiote-osc:  #a53f1e;
+    --fc-ocre:         #d9a441;
+    --fc-jade:         #2e7d62;
+    --fc-rojo:         #b3261e;
+    --fc-display: "Bahnschrift", "Franklin Gothic Medium", "Arial Narrow", "Roboto Condensed", system-ui, sans-serif;
+
+    /* Ajusta los colores de Bootstrap a la paleta */
+    --bs-body-bg: var(--fc-hueso);
+    --bs-body-color: var(--fc-texto);
+    --bs-border-color: var(--fc-linea);
+    --bs-success-rgb: 46, 125, 98;
+    --bs-danger-rgb: 179, 38, 30;
+    --bs-warning-rgb: 217, 164, 65;
+    --bs-info-rgb: 143, 183, 200;
+    --bs-secondary-rgb: 111, 103, 91;
+    --bs-link-color: var(--fc-achiote-osc);
+    --bs-link-hover-color: var(--fc-achiote);
 }
 
-.navbar-brand { letter-spacing: .5px; }
+body { -webkit-font-smoothing: antialiased; }
+
+/* ---------- Tipografía ---------- */
+h1, h2, h3, .h1, .h2, .h3, .h4, .h5 {
+    font-family: var(--fc-display);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    font-weight: 700;
+}
+
+main h1.h3 {
+    border-left: 6px solid var(--fc-achiote);
+    padding-left: .75rem;
+}
+
+.text-center h1.h3 { border-left: 0; padding-left: 0; }
+
+/* ---------- Barra superior ---------- */
+.navbar-fc {
+    background: var(--fc-carbon);
+    position: relative;
+    padding-block: .65rem .85rem;
+}
+
+.navbar-fc::after,
+.banda-tejida {
+    content: "";
+    display: block;
+    height: 6px;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--fc-achiote) 0 20px,
+        var(--fc-ocre)    20px 28px,
+        var(--fc-jade)    28px 36px,
+        var(--fc-hueso)   36px 40px
+    );
+}
+
+.navbar-fc::after {
+    position: absolute;
+    inset: auto 0 0 0;
+}
+
+.marca {
+    display: inline-flex;
+    align-items: center;
+    gap: .65rem;
+    text-decoration: none;
+    line-height: 1;
+}
+
+.marca::before {
+    content: "";
+    width: 13px;
+    height: 13px;
+    background: var(--fc-achiote);
+    transform: rotate(45deg);
+    flex: none;
+}
+
+.marca-nombre {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.marca-fuerza {
+    font-family: var(--fc-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: .14em;
+    color: var(--fc-hueso);
+}
+
+.marca-chapina {
+    font-family: var(--fc-display);
+    font-size: .62rem;
+    letter-spacing: .42em;
+    color: var(--fc-ocre);
+}
+
+.navbar-fc .nav-link {
+    font-family: var(--fc-display);
+    text-transform: uppercase;
+    letter-spacing: .09em;
+    font-size: .85rem;
+    color: rgba(244, 239, 230, .7);
+    border-bottom: 2px solid transparent;
+    padding-inline: .25rem;
+    margin-inline: 0;
+}
+
+@media (min-width: 992px) {
+    .navbar-fc .nav-link { margin-inline: .6rem; }
+}
+
+.navbar-fc .navbar-text { white-space: nowrap; }
+
+.navbar-fc .nav-link:hover { color: var(--fc-hueso); }
+
+.navbar-fc .nav-link.active {
+    color: var(--fc-hueso);
+    border-bottom-color: var(--fc-achiote);
+}
+
+/* ---------- Tarjetas, botones, tablas ---------- */
+.card {
+    background: var(--fc-papel);
+    border: 1px solid var(--fc-linea);
+    border-radius: 2px;
+    box-shadow: none;
+}
+
+.btn {
+    border-radius: 2px;
+    font-family: var(--fc-display);
+    font-weight: 600;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    font-size: .8rem;
+}
 
 .btn-primary {
-    --bs-btn-bg: var(--fc-naranja);
-    --bs-btn-border-color: var(--fc-naranja);
-    --bs-btn-hover-bg: #d96c00;
-    --bs-btn-hover-border-color: #d96c00;
-    --bs-btn-active-bg: #c26100;
-    --bs-btn-active-border-color: #c26100;
-    --bs-btn-disabled-bg: var(--fc-naranja);
-    --bs-btn-disabled-border-color: var(--fc-naranja);
+    --bs-btn-bg: var(--fc-achiote);
+    --bs-btn-border-color: var(--fc-achiote);
+    --bs-btn-hover-bg: var(--fc-achiote-osc);
+    --bs-btn-hover-border-color: var(--fc-achiote-osc);
+    --bs-btn-active-bg: #8c3418;
+    --bs-btn-active-border-color: #8c3418;
+    --bs-btn-disabled-bg: var(--fc-achiote);
+    --bs-btn-disabled-border-color: var(--fc-achiote);
 }
 
-.login-card { max-width: 420px; }
+.btn-dark {
+    --bs-btn-bg: var(--fc-carbon);
+    --bs-btn-border-color: var(--fc-carbon);
+}
 
-.tarjeta-resumen .numero { font-size: 2.25rem; font-weight: 700; line-height: 1; }
+.btn-outline-primary {
+    --bs-btn-color: var(--fc-achiote-osc);
+    --bs-btn-border-color: var(--fc-achiote);
+    --bs-btn-hover-bg: var(--fc-achiote);
+    --bs-btn-hover-border-color: var(--fc-achiote);
+    --bs-btn-active-bg: var(--fc-achiote-osc);
+    --bs-btn-active-border-color: var(--fc-achiote-osc);
+}
+
+.form-control, .form-select { border-radius: 2px; border-color: #cfc5b2; background-color: #fff; }
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--fc-achiote);
+    box-shadow: 0 0 0 .2rem rgba(196, 80, 42, .18);
+}
+
+.form-label {
+    font-family: var(--fc-display);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-size: .75rem;
+    color: var(--fc-suave);
+    margin-bottom: .3rem;
+}
+
+.table { --bs-table-bg: transparent; }
+
+.table-dark {
+    --bs-table-bg: var(--fc-carbon);
+    --bs-table-color: var(--fc-hueso);
+    --bs-table-border-color: var(--fc-carbon);
+}
+
+.table thead th {
+    font-family: var(--fc-display);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-size: .72rem;
+    font-weight: 600;
+}
+
+.badge {
+    border-radius: 2px;
+    font-weight: 600;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    font-size: .68rem;
+}
+
+.alert { border-radius: 2px; border-width: 0 0 0 4px; }
+
+/* ---------- Inicio ---------- */
+.tarjeta-resumen { border-top: 4px solid var(--fc-carbon); }
+.tarjeta-resumen.border-success { border-top-color: var(--fc-jade); }
+.tarjeta-resumen.border-warning { border-top-color: var(--fc-ocre); }
+
+.tarjeta-resumen .numero {
+    font-family: var(--fc-display);
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* ---------- Errores ---------- */
+.error-codigo {
+    font-family: var(--fc-display);
+    font-size: 7rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--fc-linea);
+    margin-bottom: .5rem;
+}
+
+/* ---------- Pie de página ---------- */
+.pie {
+    background: var(--fc-carbon);
+    color: rgba(244, 239, 230, .55);
+    font-size: .78rem;
+    letter-spacing: .04em;
+}
+
+/* ---------- Inicio de sesión ---------- */
+.login-shell {
+    display: grid;
+    grid-template-columns: 1fr;
+    max-width: 880px;
+    margin-top: 1.5rem;
+    border: 1px solid var(--fc-linea);
+}
+
+@media (min-width: 768px) {
+    .login-shell { grid-template-columns: 1.1fr 1fr; }
+}
+
+.login-marca {
+    background: var(--fc-carbon);
+    color: var(--fc-hueso);
+    padding: 2.5rem 2rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 260px;
+}
+
+.login-kicker {
+    font-family: var(--fc-display);
+    letter-spacing: .35em;
+    font-size: .7rem;
+    text-transform: uppercase;
+    color: var(--fc-ocre);
+}
+
+.login-wordmark {
+    font-family: var(--fc-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: .95;
+    margin: 1.2rem 0;
+}
+
+.login-wordmark span:first-child { display: block; font-size: 3.1rem; letter-spacing: .08em; }
+.login-wordmark span:last-child  { display: block; font-size: 1.15rem; letter-spacing: .6em; color: var(--fc-achiote); }
+
+.login-lema { color: rgba(244, 239, 230, .65); font-size: .95rem; margin-bottom: 2rem; }
+
+.login-marca .banda-tejida { margin-inline: -2rem; }
+
+.login-form { border: 0; border-radius: 0; padding: 2.25rem 2rem; }
