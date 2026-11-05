@@ -260,3 +260,12 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+-- Registro de intentos fallidos de inicio de sesión (protección contra fuerza bruta).
+CREATE TABLE intentos_login (
+    id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    usuario    VARCHAR(30) NOT NULL,
+    ip         VARCHAR(45) NOT NULL,
+    fecha_hora DATETIME    NOT NULL,
+    INDEX idx_intentos_busqueda (usuario, ip, fecha_hora)
+) ENGINE=InnoDB;

@@ -12,6 +12,18 @@ final class Auth
             'nombre'  => $usuario['nombre'],
             'rol'     => $usuario['rol'],
         ];
+        $_SESSION['ultima_actividad'] = time();
+    }
+
+    /** false si pasó más de $maxSegundos sin actividad; si no, renueva el contador. */
+    public static function sesionVigente(int $maxSegundos): bool
+    {
+        if (time() - ($_SESSION['ultima_actividad'] ?? 0) > $maxSegundos) {
+            return false;
+        }
+        $_SESSION['ultima_actividad'] = time();
+
+        return true;
     }
 
     public static function cerrar(): void

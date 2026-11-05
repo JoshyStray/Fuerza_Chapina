@@ -37,3 +37,23 @@ explicar código. Todo el código fue revisado y es comprendido por el autor.
 
 ## Capturas de pantalla
 _(pendiente)_# Fuerza_Chapina
+
+## Checklist de seguridad (OWASP Top 10)
+
+| Control | Dónde está | Cómo probarlo |
+|---|---|---|
+| Inyección SQL: consultas preparadas | Todos los modelos (`models/*.php`, `prepare()` con parámetros) | Buscar `' OR 1=1 --` en Membresías: 0 resultados y sin error |
+| XSS: escape de salida | `e()` en las vistas; `textContent` en `recepcion.js` | Poner `<script>alert(1)</script>` como nombre de un socio: se muestra como texto |
+| CSRF | Token por sesión en formularios (`Csrf::campo()`) y cabecera `X-CSRF-Token` en `fetch()` | POST sin token: responde 403 |
+| Contraseñas con hash | `password_hash` / `password_verify` (bcrypt) | La columna `password_hash` nunca guarda texto plano |
+| Sesión segura | Cookie HttpOnly + SameSite, ID estricto, regeneración al entrar y salir, cierre a los 30 min de inactividad | Ver la cookie `FCSESSID` en las herramientas del navegador |
+| Fuerza bruta | `IntentoLogin`: 5 intentos fallidos por usuario e IP en 10 min bloquean el acceso (HTTP 429) | 6 contraseñas incorrectas seguidas |
+| Control de acceso por rol (servidor) | `requerirRol()` en los controladores | Con `recepcion`, abrir `?c=usuario&a=listar`: 403 |
+| Cabeceras de seguridad | CSP, X-Frame-Options, nosniff, Referrer-Policy, Cache-Control (`index.php`) | Pestaña Red de las herramientas del navegador |
+| Errores sin detalles técnicos | `try/catch` en `index.php`; `display_errors` apagado; registro en `storage/logs/app.log` | Cualquier fallo muestra un mensaje genérico |
+| Validación en el servidor | `MembresiaController::validar()` y reglas RN-01 a RN-04 | Desactivar la validación HTML5 y enviar datos inválidos |
+| Credenciales fuera de las vistas | `config/database.php`; carpetas internas bloqueadas con `.htaccess` | Abrir `/fuerza-chapina/config/database.php` en el navegador: 403 |
+| Sin dependencias externas | Bootstrap local en `public/vendor/` | Funciona sin internet |
+
+### Si el login queda bloqueado
+Ejecutar en phpMyAdmin: `DELETE FROM intentos_login;`
