@@ -298,3 +298,82 @@ main h1.h3 {
 .login-marca .banda-tejida { margin-inline: -2rem; }
 
 .login-form { border: 0; border-radius: 0; padding: 2.25rem 2rem; }
+
+/* ---------- Recepción: semáforo ---------- */
+.campo-codigo {
+    font-family: var(--fc-display);
+    font-size: 1.75rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+}
+
+.semaforo {
+    --luz: #b9b09f;
+    display: flex;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    border: 1px solid var(--fc-linea);
+    border-left: 8px solid var(--luz);
+    background: #faf7f0;
+    transition: border-color .15s, background-color .15s;
+}
+
+.semaforo__luz {
+    flex: none;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--luz);
+    box-shadow: 0 0 0 6px rgba(0, 0, 0, .06);
+    transition: background-color .15s;
+}
+
+.semaforo__cuerpo { min-width: 0; flex: 1; }
+
+.semaforo__estado {
+    margin: 0;
+    font-family: var(--fc-display);
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    font-size: .78rem;
+    font-weight: 700;
+    color: var(--luz);
+}
+
+.semaforo__nombre {
+    margin: .15rem 0 .75rem;
+    font-family: var(--fc-display);
+    font-size: 1.7rem;
+    font-weight: 700;
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+}
+
+.semaforo__datos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .75rem;
+    margin: 0 0 .75rem;
+}
+
+.semaforo__datos dt {
+    font-family: var(--fc-display);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-size: .68rem;
+    color: var(--fc-suave);
+    font-weight: 600;
+}
+
+.semaforo__datos dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+
+.semaforo__mensaje { margin: 0; color: var(--fc-suave); }
+
+.semaforo--vigente  { --luz: var(--fc-jade); background: #eef6f2; }
+.semaforo--vencida  { --luz: var(--fc-rojo); background: #fbefee; }
+.semaforo--espera   { --luz: #b9b09f; }
+
+@media (max-width: 575.98px) {
+    .semaforo { flex-direction: column; }
+    .semaforo__datos { grid-template-columns: 1fr 1fr; }
+}
