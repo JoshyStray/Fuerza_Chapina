@@ -54,8 +54,27 @@ function renderizar(string $vista, array $datos = []): void
     require BASE_PATH . '/views/layout/footer.php';
 }
 
+/** Las peticiones hechas con fetch() envían esta cabecera y esperan JSON, no HTML. */
+function esAjax(): bool
+{
+    return ($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'fetch';
+}
+
+function responderJson(array $datos, int $codigo = 200): never
+{
+    http_response_code($codigo);
+    header('Content-Type: application/json; charset=utf-8');
+    header('Cache-Control: no-store');
+    echo json_encode($datos, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_THROW_ON_ERROR);
+    exit;
+}
+
 function mostrarError(int $codigo, string $titulo, string $mensaje): never
 {
+    if (esAjax()) {
+        responderJson(['ok' => false, 'mensaje' => $mensaje], $codigo);
+    }
+
     http_response_code($codigo);
     renderizar('errors/error', [
         'titulo'  => $titulo,

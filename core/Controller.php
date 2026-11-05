@@ -21,6 +21,9 @@ abstract class Controller
     protected function requerirSesion(): void
     {
         if (!Auth::check()) {
+            if (esAjax()) {
+                mostrarError(401, 'Sesión expirada', 'Tu sesión expiró. Inicia sesión de nuevo.');
+            }
             flash('warning', 'Inicia sesión para continuar.');
             redirect('auth', 'login');
         }
@@ -43,7 +46,10 @@ abstract class Controller
 
     protected function verificarCsrf(): void
     {
-        if (!Csrf::validar($_POST['csrf_token'] ?? null)) {
+        // Los formularios envían el token en el cuerpo; fetch() lo envía en la cabecera X-CSRF-Token.
+        $token = $_POST['csrf_token'] ?? ($_SERVER['HTTP_X_CSRF_TOKEN'] ?? null);
+
+        if (!Csrf::validar($token)) {
             mostrarError(403, 'Solicitud no válida', 'La sesión del formulario expiró. Recarga la página e inténtalo de nuevo.');
         }
     }
