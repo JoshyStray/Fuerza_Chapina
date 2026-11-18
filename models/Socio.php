@@ -10,6 +10,23 @@ final class Socio
             ->fetchAll();
     }
 
+    /** Listado con el número de membresías y asistencias de cada socio. */
+    public static function listar(string $busqueda): array
+    {
+        $like = '%' . addcslashes($busqueda, '%_\\') . '%';
+        $stmt = Database::pdo()->prepare(
+            'SELECT s.id, s.codigo, s.nombre, s.telefono, s.fecha_registro, s.activo,
+                    (SELECT COUNT(*) FROM membresias m WHERE m.socio_id = s.id) AS membresias,
+                    (SELECT COUNT(*) FROM asistencias a WHERE a.socio_id = s.id) AS asistencias
+               FROM socios s
+              WHERE s.nombre LIKE :q1 OR s.codigo LIKE :q2 OR s.telefono LIKE :q3
+              ORDER BY s.codigo'
+        );
+        $stmt->execute([':q1' => $like, ':q2' => $like, ':q3' => $like]);
+
+        return $stmt->fetchAll();
+    }
+
     public static function buscar(int $id): ?array
     {
         $stmt = Database::pdo()->prepare(
@@ -20,12 +37,64 @@ final class Socio
         return $stmt->fetch() ?: null;
     }
 
+    /** Crea el socio con el siguiente código libre. Reintenta si otra inserción gana la carrera. */
+    public static function crear(string $nombre, ?string $telefono): string
+    {
+        $pdo = Database::pdo();
+
+        for ($intento = 1; $intento <= 3; $intento++) {
+            $codigo = self::siguienteCodigo();
+            try {
+                $pdo->prepare(
+                    'INSERT INTO socios (codigo, nombre, telefono, fecha_registro)
+                     VALUES (:codigo, :nombre, :telefono, CURDATE())'
+                )->execute([':codigo' => $codigo, ':nombre' => $nombre, ':telefono' => $telefono]);
+
+                return $codigo;
+            } catch (PDOException $e) {
+                if (($e->errorInfo[1] ?? 0) !== 1062) {
+                    throw $e;
+                }
+            }
+        }
+
+        throw new RuntimeException('No se pudo asignar un código de socio.');
+    }
+
+    public static function actualizar(int $id, string $nombre, ?string $telefono): void
+    {
+        Database::pdo()->prepare('UPDATE socios SET nombre = :nombre, telefono = :telefono WHERE id = :id')
+            ->execute([':nombre' => $nombre, ':telefono' => $telefono, ':id' => $id]);
+    }
+
+    public static function cambiarActivo(int $id, bool $activo): void
+    {
+        Database::pdo()->prepare('UPDATE socios SET activo = :activo WHERE id = :id')
+            ->execute([':activo' => $activo ? 1 : 0, ':id' => $id]);
+    }
+
+    /** false si el socio tiene membresías o asistencias (RESTRICT): se desactiva en su lugar. */
+    public static function eliminar(int $id): bool
+    {
+        try {
+            $stmt = Database::pdo()->prepare('DELETE FROM socios WHERE id = :id');
+            $stmt->execute([':id' => $id]);
+
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
+            if (($e->errorInfo[1] ?? 0) === 1451) {
+                return false;
+            }
+            throw $e;
+        }
+    }
+
     /** Normaliza lo digitado en recepción: "1", "s1" o "S-001" se convierten en "S-001". */
     public static function normalizarCodigo(string $entrada): string
     {
         $limpio = strtoupper(preg_replace('/[^A-Za-z0-9]/', '', $entrada));
 
-        if (preg_match('/^S?(\d{1,3})$/', $limpio, $m)) {
+        if (preg_match('/^S?(\d{1,3})$/', $limpio, $m) === 1) {
             return 'S-' . str_pad($m[1], 3, '0', STR_PAD_LEFT);
         }
 
@@ -62,11 +131,11 @@ final class Socio
         }
 
         $estado = match (true) {
-            !$f['activo']              => 'inactivo',
-            $f['fecha_fin'] === null   => 'sin_membresia',
-            (bool) $f['vigente']       => 'vigente',
-            (bool) $f['programada']    => 'programada',
-            default                    => 'vencida',
+            !$f['activo']            => 'inactivo',
+            $f['fecha_fin'] === null => 'sin_membresia',
+            (bool) $f['vigente']     => 'vigente',
+            (bool) $f['programada']  => 'programada',
+            default                  => 'vencida',
         };
 
         return [
@@ -79,5 +148,14 @@ final class Socio
             'dias_restantes' => $f['dias_restantes'] === null ? null : (int) $f['dias_restantes'],
             'estado'         => $estado,
         ];
+    }
+
+    private static function siguienteCodigo(): string
+    {
+        $n = (int) Database::pdo()->query(
+            'SELECT COALESCE(MAX(CAST(SUBSTRING(codigo, 3) AS UNSIGNED)), 0) + 1 FROM socios'
+        )->fetchColumn();
+
+        return 'S-' . str_pad((string) $n, 3, '0', STR_PAD_LEFT);
     }
 }
