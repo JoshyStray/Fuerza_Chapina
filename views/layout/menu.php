@@ -1,10 +1,13 @@
 <?php
-// Opciones del menú según el rol. Cada módulo nuevo se agrega aquí.
+// Opciones del menú según el rol. El administrador ve todo; el recepcionista, lo operativo.
 $menuOpciones = [
-    ['etiqueta' => 'Inicio',     'c' => 'home',      'a' => 'index',  'roles' => ['administrador', 'recepcionista']],
-    ['etiqueta' => 'Recepción',  'c' => 'recepcion', 'a' => 'index',  'roles' => ['administrador', 'recepcionista']],
-    ['etiqueta' => 'Membresías', 'c' => 'membresia', 'a' => 'listar', 'roles' => ['administrador', 'recepcionista']],
-    ['etiqueta' => 'Usuarios',   'c' => 'usuario',   'a' => 'listar', 'roles' => ['administrador']],
+    ['etiqueta' => 'Recepción',   'c' => 'recepcion',  'a' => 'index',  'roles' => ['administrador', 'recepcionista']],
+    ['etiqueta' => 'Socios',      'c' => 'socio',      'a' => 'listar', 'roles' => ['administrador', 'recepcionista']],
+    ['etiqueta' => 'Membresías',  'c' => 'membresia',  'a' => 'listar', 'roles' => ['administrador', 'recepcionista']],
+    ['etiqueta' => 'Asistencias', 'c' => 'asistencia', 'a' => 'listar', 'roles' => ['administrador', 'recepcionista']],
+    ['etiqueta' => 'Planes',      'c' => 'plan',       'a' => 'listar', 'roles' => ['administrador', 'recepcionista']],
+    ['etiqueta' => 'Reportes',    'c' => 'reporte',    'a' => 'index',  'roles' => ['administrador', 'recepcionista']],
+    ['etiqueta' => 'Usuarios',    'c' => 'usuario',    'a' => 'listar', 'roles' => ['administrador']],
 ];
 $menuActual  = $_GET['c'] ?? 'home';
 $menuUsuario = Auth::usuario();
