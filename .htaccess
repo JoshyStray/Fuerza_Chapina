@@ -1,0 +1,15 @@
+Options -Indexes
+DirectoryIndex index.php
+
+# Archivos que nunca deben descargarse: base de datos, documentación y registros.
+<FilesMatch "(?i)\.(sql|md|log|ini|bak|env|txt)$">
+    Require all denied
+</FilesMatch>
+
+# Repositorio Git y archivos del editor.
+RedirectMatch 404 /\.(git|svn|vscode|idea)(/|$)
+
+# Archivos de configuración ocultos (.gitignore, .gitattributes, etc.).
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>

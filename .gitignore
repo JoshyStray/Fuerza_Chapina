@@ -1,0 +1,8 @@
+# Registros de la aplicación (se generan solos)
+storage/logs/*.log
+
+# Archivos del sistema operativo y del editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
