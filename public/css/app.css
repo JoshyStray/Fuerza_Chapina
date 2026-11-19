@@ -377,3 +377,43 @@ main h1.h3 {
     .semaforo { flex-direction: column; }
     .semaforo__datos { grid-template-columns: 1fr 1fr; }
 }
+
+/* ==========================================================================
+   Versión final: tablas, acciones, reportes e impresión
+   ========================================================================== */
+
+.acciones form { display: inline-block; margin: 0; }
+.acciones .btn { margin-inline: 2px; }
+
+.tarjeta-cifra .numero {
+    font-family: var(--fc-display);
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.fc-total td { font-weight: 700; background: #f3ecdd; }
+
+.fc-progreso {
+    width: 100%;
+    height: 10px;
+    appearance: none;
+    border: 0;
+    border-radius: 0;
+    background: var(--fc-linea);
+}
+
+.fc-progreso::-webkit-progress-bar { background: var(--fc-linea); }
+.fc-progreso::-webkit-progress-value { background: var(--fc-achiote); }
+.fc-progreso::-moz-progress-bar { background: var(--fc-achiote); }
+
+.navbar-fc .navbar-toggler { border-color: rgba(244, 239, 230, .4); }
+.navbar-fc .navbar-toggler-icon { filter: invert(1); }
+
+@media print {
+    .navbar, .pie, .no-imprimir, .alert, .btn { display: none !important; }
+    body { background: #fff !important; }
+    main { padding: 0 !important; }
+    .card { border: 0; box-shadow: none; }
+    .table-dark { --bs-table-bg: #eee; --bs-table-color: #000; }
+}
