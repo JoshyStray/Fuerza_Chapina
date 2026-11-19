@@ -41,7 +41,7 @@ final class PlanController extends Controller
     public function editar(): void
     {
         $this->requerirRol('administrador');
-        $plan = $this->registro($_GET['id'] ?? null, Plan::buscar(...), 'Plan');
+        $plan = $this->registro($_GET['id'] ?? null, [Plan::class, 'buscar'], 'Plan');
         $this->formulario($plan, [
             'nombre'        => $plan['nombre'],
             'duracion_dias' => $plan['duracion_dias'],
@@ -52,7 +52,7 @@ final class PlanController extends Controller
     public function actualizar(): void
     {
         $this->protegerAccion('administrador');
-        $plan = $this->registro($_POST['id'] ?? null, Plan::buscar(...), 'Plan');
+        $plan = $this->registro($_POST['id'] ?? null, [Plan::class, 'buscar'], 'Plan');
         $v = new Validar();
         $datos = $this->leer($v, (int) $plan['id']);
 
@@ -70,7 +70,7 @@ final class PlanController extends Controller
     public function estado(): void
     {
         $this->protegerAccion('administrador');
-        $plan = $this->registro($_POST['id'] ?? null, Plan::buscar(...), 'Plan');
+        $plan = $this->registro($_POST['id'] ?? null, [Plan::class, 'buscar'], 'Plan');
         $activar = !(bool) $plan['activo'];
 
         Plan::cambiarActivo((int) $plan['id'], $activar);
@@ -81,7 +81,7 @@ final class PlanController extends Controller
     public function eliminar(): void
     {
         $this->protegerAccion('administrador');
-        $plan = $this->registro($_POST['id'] ?? null, Plan::buscar(...), 'Plan');
+        $plan = $this->registro($_POST['id'] ?? null, [Plan::class, 'buscar'], 'Plan');
 
         if (Plan::eliminar((int) $plan['id'])) {
             flash('success', 'Plan eliminado.');

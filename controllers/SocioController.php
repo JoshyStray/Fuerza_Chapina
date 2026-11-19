@@ -38,7 +38,7 @@ final class SocioController extends Controller
 
     public function editar(): void
     {
-        $socio = $this->registro($_GET['id'] ?? null, Socio::buscar(...), 'Socio');
+        $socio = $this->registro($_GET['id'] ?? null, [Socio::class, 'buscar'], 'Socio');
         $this->formulario($socio, [
             'nombre'   => $socio['nombre'],
             'telefono' => $socio['telefono'] ?? '',
@@ -48,7 +48,7 @@ final class SocioController extends Controller
     public function actualizar(): void
     {
         $this->protegerAccion();
-        $socio = $this->registro($_POST['id'] ?? null, Socio::buscar(...), 'Socio');
+        $socio = $this->registro($_POST['id'] ?? null, [Socio::class, 'buscar'], 'Socio');
         $v = new Validar();
         $datos = $this->leer($v);
 
@@ -67,7 +67,7 @@ final class SocioController extends Controller
     public function estado(): void
     {
         $this->protegerAccion('administrador');
-        $socio = $this->registro($_POST['id'] ?? null, Socio::buscar(...), 'Socio');
+        $socio = $this->registro($_POST['id'] ?? null, [Socio::class, 'buscar'], 'Socio');
         $activar = !(bool) $socio['activo'];
 
         Socio::cambiarActivo((int) $socio['id'], $activar);
@@ -81,7 +81,7 @@ final class SocioController extends Controller
     public function eliminar(): void
     {
         $this->protegerAccion('administrador');
-        $socio = $this->registro($_POST['id'] ?? null, Socio::buscar(...), 'Socio');
+        $socio = $this->registro($_POST['id'] ?? null, [Socio::class, 'buscar'], 'Socio');
 
         if (Socio::eliminar((int) $socio['id'])) {
             flash('success', 'Socio eliminado.');

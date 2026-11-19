@@ -53,7 +53,7 @@ final class AsistenciaController extends Controller
     public function editar(): void
     {
         $this->requerirRol('administrador');
-        $a = $this->registro($_GET['id'] ?? null, Asistencia::buscar(...), 'Asistencia');
+        $a = $this->registro($_GET['id'] ?? null, [Asistencia::class, 'buscar'], 'Asistencia');
 
         $this->formulario($a, [
             'socio_id'   => $a['socio_id'],
@@ -64,7 +64,7 @@ final class AsistenciaController extends Controller
     public function actualizar(): void
     {
         $this->protegerAccion('administrador');
-        $a = $this->registro($_POST['id'] ?? null, Asistencia::buscar(...), 'Asistencia');
+        $a = $this->registro($_POST['id'] ?? null, [Asistencia::class, 'buscar'], 'Asistencia');
         $v = new Validar();
         $datos = $this->leer($v, (int) $a['id']);
 
@@ -85,7 +85,7 @@ final class AsistenciaController extends Controller
     public function eliminar(): void
     {
         $this->protegerAccion('administrador');
-        $a = $this->registro($_POST['id'] ?? null, Asistencia::buscar(...), 'Asistencia');
+        $a = $this->registro($_POST['id'] ?? null, [Asistencia::class, 'buscar'], 'Asistencia');
 
         Asistencia::eliminar((int) $a['id']);
         flash('success', 'Asistencia eliminada.');

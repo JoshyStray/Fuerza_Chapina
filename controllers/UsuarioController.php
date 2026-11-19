@@ -45,7 +45,7 @@ final class UsuarioController extends Controller
 
     public function editar(): void
     {
-        $u = $this->registro($_GET['id'] ?? null, Usuario::buscar(...), 'Usuario');
+        $u = $this->registro($_GET['id'] ?? null, [Usuario::class, 'buscar'], 'Usuario');
         $this->formulario($u, [
             'usuario' => $u['usuario'],
             'nombre'  => $u['nombre'],
@@ -56,7 +56,7 @@ final class UsuarioController extends Controller
     public function actualizar(): void
     {
         $this->protegerAccion();
-        $u = $this->registro($_POST['id'] ?? null, Usuario::buscar(...), 'Usuario');
+        $u = $this->registro($_POST['id'] ?? null, [Usuario::class, 'buscar'], 'Usuario');
         $v = new Validar();
         $datos = $this->leer($v, $u);
 
@@ -80,7 +80,7 @@ final class UsuarioController extends Controller
     public function estado(): void
     {
         $this->protegerAccion();
-        $u = $this->registro($_POST['id'] ?? null, Usuario::buscar(...), 'Usuario');
+        $u = $this->registro($_POST['id'] ?? null, [Usuario::class, 'buscar'], 'Usuario');
         $activar = !(bool) $u['activo'];
 
         if ((int) $u['id'] === Auth::id()) {
@@ -98,7 +98,7 @@ final class UsuarioController extends Controller
     public function eliminar(): void
     {
         $this->protegerAccion();
-        $u = $this->registro($_POST['id'] ?? null, Usuario::buscar(...), 'Usuario');
+        $u = $this->registro($_POST['id'] ?? null, [Usuario::class, 'buscar'], 'Usuario');
 
         if ((int) $u['id'] === Auth::id()) {
             flash('warning', 'No puedes eliminar tu propia cuenta.');

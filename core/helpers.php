@@ -17,7 +17,7 @@ function asset(string $ruta): string
     return BASE_URL . '/public/' . ltrim($ruta, '/');
 }
 
-function redirect(string $controlador = 'home', string $accion = 'index', array $params = []): never
+function redirect(string $controlador = 'home', string $accion = 'index', array $params = []): void
 {
     header('Location: ' . url($controlador, $accion, $params));
     exit;
@@ -40,7 +40,7 @@ function fecha(?string $fecha): string
     return $fecha ? date('d/m/Y', strtotime($fecha)) : '';
 }
 
-function quetzales(float|int|string $monto): string
+function quetzales(mixed $monto): string
 {
     return 'Q ' . number_format((float) $monto, 2);
 }
@@ -60,7 +60,7 @@ function esAjax(): bool
     return ($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'fetch';
 }
 
-function responderJson(array $datos, int $codigo = 200): never
+function responderJson(array $datos, int $codigo = 200): void
 {
     http_response_code($codigo);
     header('Content-Type: application/json; charset=utf-8');
@@ -69,7 +69,7 @@ function responderJson(array $datos, int $codigo = 200): never
     exit;
 }
 
-function mostrarError(int $codigo, string $titulo, string $mensaje): never
+function mostrarError(int $codigo, string $titulo, string $mensaje): void
 {
     if (esAjax()) {
         responderJson(['ok' => false, 'mensaje' => $mensaje], $codigo);
